@@ -1,4 +1,6 @@
+// Importing the BigQuery client library from Google Cloud
 const { BigQuery } = require('@google-cloud/bigquery');
+
 const credentials ={
   "type": "service_account",
   "project_id": "forumweb-eb712",
@@ -14,19 +16,27 @@ const credentials ={
 }
 const bigquery = new BigQuery({credentials});
 
+// Creating an instance of the BigQuery client
+const bigquery = new BigQuery();
+
+// Function to run a SQL query on BigQuery
 async function runQuery(query) {
   try {
+    // Setting up the options for the query
     const options = {
-      query: query,
-      useLegacySql: false, // Use standard SQL syntax
+      query: query, // The SQL query to be executed
+      useLegacySql: false, // Using standard SQL syntax instead of legacy SQL
     };
 
+    // Running the query and storing the results
     const [rows] = await bigquery.query(options);
-    return rows;
+    return rows; // Returning the rows of data retrieved from the query
   } catch (error) {
+    // Logging any errors that occur during the query execution
     console.error('Error running query:', error);
-    throw error;
+    throw error; // Throwing the error to be handled by the calling function
   }
 }
 
+// Exporting the runQuery function for use in other files
 module.exports = runQuery;
