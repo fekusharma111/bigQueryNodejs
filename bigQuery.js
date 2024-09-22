@@ -1,16 +1,5 @@
+// Importing the BigQuery client library from Google Cloud
 const { BigQuery } = require('@google-cloud/bigquery');
-// const credentials = {
-//     "type": process.env.GOOGLE_APPLICATION_CREDENTIALS_TYPE,
-//   "project_id": process.env.GOOGLE_APPLICATION_PROJECT_ID,
-//   "private_key_id": process.env.GOOGLE_APPLICATION_PRIVATE_KEY_ID,
-//   "private_key": process.env.GOOGLE_APPLICATION_PRIVATE_KEY,
-//   "client_id": process.env.GOOGLE_APPLICATION_CLIENT_ID,
-//   "auth_uri": process.env.GOOGLE_APPLICATION_AUTH_URI,
-//   "token_uri":process.env.GOOGLE_APPLICATION_TOKEN_URI,
-//   "auth_provider_x509_cert_url": process.env.GOOGLE_APPLICATION_AUTH_PROVIDER_X509_CERT_URL,
-//   "client_x509_cert_url": process.env.GOOGLE_APPLICATION_CLIENT_X509_CERT_URL,
-//   "universe_domain": process.env.GOOGLE_APPLICATION_UNIVERSE_DOMAIN
-//   };
 const credentials ={
   "type": "service_account",
   "project_id": "forumweb-eb712",
@@ -24,21 +13,29 @@ const credentials ={
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/bigqueryforum%40forumweb-eb712.iam.gserviceaccount.com",
   "universe_domain": "googleapis.com"
 }
+
+// Creating an instance of the BigQuery client
 const bigquery = new BigQuery( {credentials });
 
+
+// Function to run a SQL query on BigQuery
 async function runQuery(query) {
   try {
+    // Setting up the options for the query
     const options = {
-      query: query,
-      useLegacySql: false, // Use standard SQL syntax
+      query: query, // The SQL query to be executed
+      useLegacySql: false, // Using standard SQL syntax instead of legacy SQL
     };
 
+    // Running the query and storing the results
     const [rows] = await bigquery.query(options);
-    return rows;
+    return rows; // Returning the rows of data retrieved from the query
   } catch (error) {
+    // Logging any errors that occur during the query execution
     console.error('Error running query:', error);
-    throw error;
+    throw error; // Throwing the error to be handled by the calling function
   }
 }
 
+// Exporting the runQuery function for use in other files
 module.exports = runQuery;
